@@ -1,5 +1,15 @@
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level5`)
+    tiles.placeOnTile(sprite, tiles.getTileLocation(8, 3))
+})
+scene.onHitWall(SpriteKind.Player, function (sprite, location) {
+    if (mySprite.tileKindAt(TileDirection.Top, assets.tile`myTile11`)) {
+        game.showLongText("You read : \"For some reason someone put a weird old tower here so stay away I guess... You expect a reason? I'm just a sign.\"", DialogLayout.Bottom)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, location) {
+    tiles.setCurrentTilemap(tilemap`level4`)
+    tiles.placeOnTile(sprite, tiles.getTileLocation(1, 4))
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite, location) {
     if (Itm1 == "") {
@@ -30,7 +40,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite, l
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     story.showPlayerChoices("Exit", Itm1, Itm2, "More")
     if (story.checkLastAnswer("More")) {
-        story.showPlayerChoices(Itm3, Itm4, Itm5)
+        story.showPlayerChoices(Itm3, Itm4, Itm5, "Exit")
         if (story.checkLastAnswer("Pocket Fox")) {
             game.showLongText("\"Pocket Fox\" This small fox seems eager to follow you. So small he can fit in a pocket.", DialogLayout.Bottom)
         }
@@ -108,31 +118,31 @@ animation.runImageAnimation(
 mySprite,
 [img`
     e e e e e e e e e e 
-    f 1 1 f f f f 1 1 f 
-    f 1 f f f f f f 1 f 
-    f 1 f d d d d f 1 f 
-    f 1 f f d d f f 1 f 
-    f 1 f d f f d f 1 f 
-    6 6 6 6 6 6 6 6 6 6 
-    6 6 6 6 6 6 6 6 6 6 
-    6 6 6 6 6 6 6 6 6 6 
-    6 6 6 6 6 6 6 6 6 6 
-    6 6 6 6 6 6 6 6 6 6 
+    f b d f f f f d b f 
+    f d f f f f f f d f 
+    f d f d d d d f d f 
+    f d f f d d f f d f 
+    f b f d f f d f b f 
+    8 6 6 6 6 6 6 6 6 8 
+    8 6 6 6 6 6 6 6 6 8 
+    8 6 6 6 6 6 6 6 6 8 
+    8 6 6 6 6 6 6 6 6 8 
+    8 6 6 6 6 6 6 6 6 8 
     e e e e e e e e e e 
     e e e e e e e e e e 
     e e f f f f f f e e 
     `,img`
     e e e e e e e e e e 
-    f 1 1 1 1 1 1 1 1 f 
-    f 1 1 f f f f 1 1 f 
-    f 1 f f f f f f 1 f 
-    f 1 f d d d d f 1 f 
-    f 1 f f d d f f 1 f 
-    6 6 6 6 6 6 6 6 6 6 
-    6 6 6 6 6 6 6 6 6 6 
-    6 6 6 6 6 6 6 6 6 6 
-    6 6 6 6 6 6 6 6 6 6 
-    6 6 6 6 6 6 6 6 6 6 
+    f b d d d d d d b f 
+    f d 1 f f f f 1 d f 
+    f d f f f f f f d f 
+    f d f d d d d f d f 
+    f b f f d d f f b f 
+    8 6 6 6 6 6 6 6 6 8 
+    8 6 6 6 6 6 6 6 6 8 
+    8 6 6 6 6 6 6 6 6 8 
+    8 6 6 6 6 6 6 6 6 8 
+    8 6 6 6 6 6 6 6 6 8 
     e e e e e e e e e e 
     e e e e e e e e e e 
     e e f f f f f f e e 
