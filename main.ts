@@ -5,19 +5,36 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite, l
     if (Itm1 == "") {
         Itm1 = "Cracked Bat"
         tiles.setTileAt(location, assets.tile`myTile0`)
+        game.showLongText("You got a Cracked Bat! Click the menu button on your interface to equip it!", DialogLayout.Bottom)
     } else if (Itm2 == "") {
         Itm2 = "Cracked Bat"
         tiles.setTileAt(location, assets.tile`myTile0`)
+        game.showLongText("You got a Cracked Bat! Click the menu button on your interface to equip it!", DialogLayout.Bottom)
     } else if (Itm3 == "") {
         Itm3 = "Cracked Bat"
         tiles.setTileAt(location, assets.tile`myTile0`)
+        game.showLongText("You got a Cracked Bat! Click the menu button on your interface to equip it!", DialogLayout.Bottom)
+    } else if (Itm4 == "") {
+        Itm4 = "Cracked Bat"
+        tiles.setTileAt(location, assets.tile`myTile0`)
+        game.showLongText("You got a Cracked Bat! Click the menu button on your interface to equip it!", DialogLayout.Bottom)
+    } else if (Itm5 == "") {
+        Itm4 = "Cracked Bat"
+        tiles.setTileAt(location, assets.tile`myTile0`)
+        game.showLongText("You got a Cracked Bat! Click the menu button on your interface to equip it!", DialogLayout.Bottom)
     } else {
         game.showLongText("Inventory is too full!", DialogLayout.Bottom)
         tiles.placeOnTile(mySprite, tiles.getTileLocation(8, 5))
     }
 })
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    story.showPlayerChoices("Exit", Itm1, Itm2, Itm3)
+    story.showPlayerChoices("Exit", Itm1, Itm2, "More")
+    if (story.checkLastAnswer("More")) {
+        story.showPlayerChoices(Itm3, Itm4, Itm5)
+        if (story.checkLastAnswer("Pocket Fox")) {
+            game.showLongText("\"Pocket Fox\" This small fox seems eager to follow you. So small he can fit in a pocket.", DialogLayout.Bottom)
+        }
+    }
     if (story.checkLastAnswer("Cracked Bat")) {
         game.showLongText("Atk +5!", DialogLayout.Bottom)
         Equip += 5
@@ -29,6 +46,10 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
             Itm2 = ""
         } else if (story.checkLastAnswer(Itm3)) {
             Itm3 = ""
+        } else if (story.checkLastAnswer(Itm4)) {
+            Itm4 = ""
+        } else if (story.checkLastAnswer(Itm5)) {
+            Itm5 = ""
         }
     } else if (story.checkLastAnswer("Sandwich")) {
         HP += 15
@@ -45,9 +66,13 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
             Itm2 = ""
         } else if (story.checkLastAnswer(Itm3)) {
             Itm3 = ""
+        } else if (story.checkLastAnswer(Itm4)) {
+            Itm4 = ""
+        } else if (story.checkLastAnswer(Itm5)) {
+            Itm5 = ""
         }
-    } else if (story.checkLastAnswer("Pocket Fox")) {
-        game.showLongText("\"Pocket Fox\" This small fox seems eager to follow you. So small he can fit in a pocket.", DialogLayout.Bottom)
+    } else if (false) {
+    	
     } else if (false) {
     	
     } else {
@@ -58,6 +83,8 @@ let ItmList: string[] = []
 let HP = 0
 let MaxHP = 0
 let Trash = ""
+let Itm5 = ""
+let Itm4 = ""
 let Itm3 = ""
 let Itm2 = ""
 let Itm1 = ""
@@ -133,9 +160,17 @@ timer.after(5000, function () {
 Itm1 = "Sandwich"
 Itm2 = "Sandwich"
 Itm3 = "Pocket Fox"
+Itm4 = ""
+Itm5 = ""
 Trash = ""
 let Equip = 0
 let BAtk = 5
 MaxHP = 30
 HP = 30
-ItmList = [Itm1, Itm2, Itm3]
+ItmList = [
+Itm1,
+Itm2,
+Itm3,
+Itm4,
+Itm5
+]
