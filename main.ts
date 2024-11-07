@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const TowerEnemy = SpriteKind.create()
+}
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level5`)
     tiles.placeOnTile(sprite, tiles.getTileLocation(8, 3))
@@ -143,6 +146,27 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, l
         tiles.placeOnTile(sprite, tiles.getTileLocation(1, 4))
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile9`, function (sprite, location) {
+    tiles.setCurrentTilemap(tilemap`level3`)
+    tiles.placeOnTile(sprite, tiles.getTileLocation(9, 2))
+    TowerAmbush = true
+    for (let index = 0; index < 10; index++) {
+        mySprite2 = sprites.create(img`
+            . . f f f f . . 
+            . f f f f f f . 
+            . f c c c c f . 
+            . f 2 c c 2 f . 
+            . f c 2 2 c f . 
+            f f f f f f f f 
+            f c f f f f c f 
+            . f c c c c f . 
+            . f c f f c f . 
+            . f f f f f f . 
+            `, SpriteKind.TowerEnemy)
+        tiles.placeOnRandomTile(mySprite2, assets.tile`myTile33`)
+        mySprite2.follow(mySprite, 75)
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite, location) {
     if (Itm1 == "") {
         Itm1 = "Cracked Bat"
@@ -209,6 +233,28 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile18`, function (sprite, 
         1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
         1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
         `)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile37`, function (sprite, location) {
+    tiles.setCurrentTilemap(tilemap`level10`)
+    tiles.placeOnTile(sprite, tiles.getTileLocation(9, 2))
+    TowerAmbush2 = true
+    for (let index = 0; index < 10; index++) {
+        mySprite2 = sprites.create(img`
+            . . f f f f f f . . 
+            . . f c c c c f . . 
+            . . f 2 2 2 c f . . 
+            . . f b b c c f . . 
+            . . f f b c f f . . 
+            . f b b b b b b f . 
+            f b f b b b b f b f 
+            f f . f b b f . f f 
+            . . . f b b f . . . 
+            . . f b b b b f . . 
+            . . f f f f f f . . 
+            `, SpriteKind.TowerEnemy)
+        tiles.placeOnRandomTile(mySprite2, assets.tile`myTile33`)
+        mySprite2.follow(mySprite, 75)
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level6`)
@@ -526,8 +572,10 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile26`, function (sprite, location) {
     game.showLongText("You... And that fox... You are destined to finally restore peace to the land. I will just yeet you to the final boss if you want. It just costs five dollars. I'm joking of course, but the danger is real.", DialogLayout.Bottom)
+    tiles.setTileAt(location, assets.tile`myTile24`)
     timer.after(500, function () {
-        tiles.setCurrentTilemap(tilemap`level16`)
+        game.showLongText("Return to the old tower... ", DialogLayout.Bottom)
+        tiles.setCurrentTilemap(tilemap`level8`)
     })
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -540,6 +588,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     }
 })
 let projectile: Sprite = null
+let TowerAmbush2 = false
+let TowerAmbush = false
 let Ambush = 0
 let mySprite2: Sprite = null
 let OverWorldAtk = false
@@ -721,6 +771,172 @@ forever(function () {
             pauseUntil(() => !(story.isMenuOpen()))
         } else {
             controller.moveSprite(mySprite, 100, 100)
+        }
+    }
+})
+forever(function () {
+    if (TowerAmbush) {
+        if (sprites.allOfKind(SpriteKind.TowerEnemy).length == 0) {
+            TowerAmbush = false
+            animation.runImageAnimation(
+            mySprite,
+            [img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f f . . 
+                . f d f f d f 4 f . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f f . . 
+                . f f d d f f 4 4 . 
+                . f d f f d f 4 4 f 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f f . . 
+                . f f d d f f 4 4 . 
+                . f d f f d f 4 4 f 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f f . . 
+                . f d f f d f 4 f . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `],
+            100,
+            false
+            )
+            tiles.setCurrentTilemap(tilemap`level9`)
+            timer.after(300, function () {
+                game.showLongText("Hey, what's that orb thing in the center?", DialogLayout.Bottom)
+            })
+        }
+    }
+})
+forever(function () {
+    if (TowerAmbush2) {
+        if (sprites.allOfKind(SpriteKind.TowerEnemy).length == 0) {
+            TowerAmbush2 = false
+            animation.runImageAnimation(
+            mySprite,
+            [img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f f . . 
+                . f d f f d f 4 f . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f f . . 
+                . f f d d f f 4 4 . 
+                . f d f f d f 4 4 f 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f f . . 
+                . f f d d f f 4 4 . 
+                . f d f f d f 4 4 f 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f f . . 
+                . f d f f d f 4 f . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `],
+            100,
+            false
+            )
+            tiles.setCurrentTilemap(tilemap`level14`)
+            timer.after(300, function () {
+                game.showLongText("Almost at the top! I wonder what's there? Whatever it is, we can defeat! And I can finally do what I wanted to do for so long!", DialogLayout.Bottom)
+            })
         }
     }
 })
