@@ -1,5 +1,8 @@
 namespace SpriteKind {
     export const TowerEnemy = SpriteKind.create()
+    export const Contrast = SpriteKind.create()
+    export const UnoReverseProjectile = SpriteKind.create()
+    export const CutsceneNPC = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level5`)
@@ -18,88 +21,298 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
         }
     }
 })
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (CharacterSwitchOn) {
+        if (!(CharacterFoxOn)) {
+            CharacterFoxOn = true
+            animation.runImageAnimation(
+            mySprite,
+            [img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f f . . 
+                . f d f f d f 4 f . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f f . . 
+                . f f d d f f 4 4 . 
+                . f d f f d f 4 4 f 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . f . . . . f . . . 
+                . f f . . f f . . . 
+                . f 4 f f 4 f . . . 
+                . f f 4 4 f f . . . 
+                . f 1 f f 1 f f . . 
+                . f f f f f f 1 f . 
+                f 4 1 1 1 1 4 f 4 f 
+                . f 4 1 1 4 f 4 4 f 
+                . f 4 f f 4 f f f . 
+                . f f f f f f . . . 
+                `],
+            100,
+            false
+            )
+            info.setScore(30)
+            info.setLife(15)
+        } else if (CharacterFoxOn) {
+            CharacterFoxOn = false
+            animation.runImageAnimation(
+            mySprite,
+            [img`
+                . f . . . . f . . . 
+                . f f . . f f . . . 
+                . f 4 f f 4 f . . . 
+                . f f 4 4 f f . . . 
+                . f 1 f f 1 f f . . 
+                . f f f f f f 1 f . 
+                f 4 1 1 1 1 4 f 4 f 
+                . f 4 1 1 4 f 4 4 f 
+                . f 4 f f 4 f f f . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f f . . 
+                . f f d d f f 4 4 . 
+                . f d f f d f 4 4 f 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f f . . 
+                . f d f f d f 4 f . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `],
+            100,
+            false
+            )
+            info.setLife(25)
+            info.setScore(15)
+        }
+    }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Contrast, function (sprite, otherSprite) {
+    if (OverWorldAtk) {
+        info.changeLifeBy(-1)
+        pause(500)
+        mySprite.setVelocity(randint(-100, 100), randint(-100, 100))
+        mySprite.setBounceOnWall(true)
+        timer.after(1000, function () {
+            mySprite.setVelocity(0, 0)
+            mySprite.setBounceOnWall(false)
+            game.showLongText("Maybe I can hit the projectiles back?", DialogLayout.Bottom)
+        })
+    } else {
+        info.changeLifeBy(-1)
+        pause(500)
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level7`)
     tiles.placeOnTile(sprite, tiles.getTileLocation(9, 2))
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (Weapon) {
-        OverWorldAtk = true
-        animation.runImageAnimation(
-        mySprite,
-        [img`
-            . . f f f f . . . . 
-            . f f f f f f . . . 
-            . f d d d d f . . . 
-            . f f d d f f . . . 
-            . f d f f d f . . . 
-            f 2 2 2 2 2 e f . . 
-            f d 2 2 2 e d e . . 
-            . f 8 8 e e e . . . 
-            . f 8 e e e f . . . 
-            . f f f e f f . . . 
-            `,img`
-            . . . f f f f . . . 
-            . . . f f f f f . . 
-            . . f d d d d f . . 
-            . . f d f d f f . . 
-            . . f d d f d f . . 
-            . . f b e e b 2 f . 
-            . . f 2 2 d 2 f 1 . 
-            . . f 8 8 e e 1 . 1 
-            . . f 8 f e e e 1 . 
-            . . f f f f e e . . 
-            `,img`
-            . . . f f f f . . . 
-            . . f f f f f f . . 
-            . . f d d d d f . . 
-            . . f f d d f f . . 
-            . . f d f f d f . . 
-            . f 2 b e e b 2 f . 
-            . . f 2 d d 2 f 1 . 
-            . . f 8 e e 1 1 . . 
-            . . f 8 e e 8 f 1 . 
-            . . f f e e 1 1 . . 
-            `,img`
-            . . . f f f f . . . 
-            . . f f f f f . . . 
-            . . f d d d d f . . 
-            . . f f d f d f . . 
-            . . f d f d d f . . 
-            . f 2 b e e b f . . 
-            . . f 2 d 2 2 f . . 
-            . . f e e 8 8 f . . 
-            . . e e e 1 8 1 . . 
-            . . e e 1 f 1 f . . 
-            `,img`
-            . . f f f f . . . . 
-            . f f f f f f . . . 
-            . f d d d d f . . . 
-            . f f d d f f . . . 
-            . f d f f d f . . . 
-            f 2 2 2 2 2 e f . . 
-            f d 2 2 2 e d e . . 
-            . f 8 8 e e e . . . 
-            . f 8 e e e 1 . . . 
-            . f f f e 1 f 1 . . 
-            `,img`
-            . . f f f f . . . . 
-            . f f f f f f . . . 
-            . f d d d d f . . . 
-            . f f d d f f . . . 
-            . f d f f d f . . . 
-            f 2 2 2 2 2 2 f . . 
-            f d 2 2 2 2 d f . . 
-            . f 8 8 8 8 f . . . 
-            . f 8 f f 8 f . . . 
-            . f f f f f f . . . 
-            `],
-        100,
-        false
-        )
-        timer.after(500, function () {
-            OverWorldAtk = false
-        })
+    if (CharacterFoxOn) {
+        if (Weapon) {
+            OverWorldAtk = true
+            animation.runImageAnimation(
+            mySprite,
+            [img`
+                . f . . . . f . . . 
+                . f f . . f f . . . 
+                . f 4 f f 4 f . . . 
+                . f f 4 4 f f . . . 
+                . f 4 f f 4 f . . . 
+                f f f f f f e f . . 
+                f 4 1 1 1 e d e . . 
+                . f 4 f e e e . . . 
+                . f 4 e e e f . . . 
+                . f f f e f f . . . 
+                `,img`
+                . . . f . . f . . . 
+                . . . f f . f f . . 
+                . . f 4 4 f 4 f . . 
+                . . f 4 f 4 f f . . 
+                . . f 4 1 f 1 f . . 
+                . . f f e e f 4 f . 
+                . . f 4 1 f 4 f 1 . 
+                . . f 4 4 e e 1 . 1 
+                . . f 4 f e e e 1 . 
+                . . f f f f e e . . 
+                `,img`
+                . . f . . . . f . . 
+                . . f f . . f f . . 
+                . . f 4 f f 4 f . . 
+                . . f f 4 4 f f . . 
+                . . f 1 f f 1 f . . 
+                . f 4 f e e f 4 f . 
+                . . f 4 f f 4 f 1 . 
+                . . f 4 e e 1 1 . . 
+                . . f 4 e e 4 f 1 . 
+                . . f f e e 1 1 . . 
+                `,img`
+                . . . f . . f . . . 
+                . . f f . f f . . . 
+                . . f 4 f 4 4 f . . 
+                . . f f 4 f 4 f . . 
+                . . f 1 f 1 4 f . . 
+                . f 4 f e e f f . . 
+                . 1 f 4 f 1 4 f . . 
+                1 . 1 e e 4 4 f . . 
+                . 1 e e e f 4 f . . 
+                . . e e f f f f . . 
+                `,img`
+                . f . . . . f . . . 
+                . f f . . f f . . . 
+                . f 4 f f 4 f . . . 
+                . f f 4 4 f f . . . 
+                . f 4 f f 4 f . . . 
+                f f f f f f e f . . 
+                f 4 1 1 1 e d e . . 
+                . f 4 f e e e . . . 
+                . f 4 e e e 1 . . . 
+                . f f f e 1 f 1 . . 
+                `,img`
+                . f . . . . f . . . 
+                . f f . . f f . . . 
+                . f 4 f f 4 f . . . 
+                . f f 4 4 f f . . . 
+                . f 1 f f 1 f . . . 
+                f f f f f f f f . . 
+                f 4 1 1 1 1 4 f . . 
+                . f 4 1 1 4 f . . . 
+                . f 4 f f 4 f . . . 
+                . f f f f f f . . . 
+                `],
+            100,
+            false
+            )
+            timer.after(500, function () {
+                OverWorldAtk = false
+            })
+        }
+    } else {
+        if (Weapon) {
+            OverWorldAtk = true
+            animation.runImageAnimation(
+            mySprite,
+            [img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 e f . . 
+                f d 2 2 2 e d e . . 
+                . f 8 8 e e e . . . 
+                . f 8 e e e f . . . 
+                . f f f e f f . . . 
+                `,img`
+                . . . f f f f . . . 
+                . . . f f f f f . . 
+                . . f d d d d f . . 
+                . . f d f d f f . . 
+                . . f d d f d f . . 
+                . . f b e e b 2 f . 
+                . . f 2 2 d 2 f 1 . 
+                . . f 8 8 e e 1 . 1 
+                . . f 8 f e e e 1 . 
+                . . f f f f e e . . 
+                `,img`
+                . . . f f f f . . . 
+                . . f f f f f f . . 
+                . . f d d d d f . . 
+                . . f f d d f f . . 
+                . . f d f f d f . . 
+                . f 2 b e e b 2 f . 
+                . . f 2 d d 2 f 1 . 
+                . . f 8 e e 1 1 . . 
+                . . f 8 e e 8 f 1 . 
+                . . f f e e 1 1 . . 
+                `,img`
+                . . . f f f f . . . 
+                . . f f f f f . . . 
+                . . f d d d d f . . 
+                . . f f d f d f . . 
+                . . f d f d d f . . 
+                . f 2 b e e b f . . 
+                . . f 2 d 2 2 f . . 
+                . . f e e 8 8 f . . 
+                . . e e e 1 8 1 . . 
+                . . e e 1 f 1 f . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 e f . . 
+                f d 2 2 2 e d e . . 
+                . f 8 8 e e e . . . 
+                . f 8 e e e 1 . . . 
+                . f f f e 1 f 1 . . 
+                `,img`
+                . . f f f f . . . . 
+                . f f f f f f . . . 
+                . f d d d d f . . . 
+                . f f d d f f . . . 
+                . f d f f d f . . . 
+                f 2 2 2 2 2 2 f . . 
+                f d 2 2 2 2 d f . . 
+                . f 8 8 8 8 f . . . 
+                . f 8 f f 8 f . . . 
+                . f f f f f f . . . 
+                `],
+            100,
+            false
+            )
+            timer.after(500, function () {
+                OverWorldAtk = false
+            })
+        }
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
@@ -144,6 +357,99 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, l
     } else {
         tiles.setCurrentTilemap(tilemap`level4`)
         tiles.placeOnTile(sprite, tiles.getTileLocation(1, 4))
+    }
+})
+sprites.onOverlap(SpriteKind.Contrast, SpriteKind.UnoReverseProjectile, function (sprite, otherSprite) {
+    if (BossFight) {
+        FightBack += -1
+        if (FightBack <= 0) {
+            timer.throttle("action", 100000000000000000000, function () {
+                timer.after(500, function () {
+                    controller.moveSprite(mySprite, 0, 0)
+                    sprite.setImage(img`
+                        . . . . . . 6 6 6 6 . . . . . . 
+                        . . . . 6 6 6 5 5 6 6 6 . . . . 
+                        . . . 7 7 7 7 6 6 6 6 6 6 . . . 
+                        . . 6 7 7 7 7 8 8 8 1 1 6 6 . . 
+                        . . 7 7 7 7 7 8 8 8 1 1 5 6 . . 
+                        . 6 7 7 7 7 8 8 8 8 8 5 5 6 6 . 
+                        . 6 6 7 7 8 8 6 6 6 6 6 6 6 6 . 
+                        . 6 6 7 7 8 8 6 6 6 6 6 6 6 6 . 
+                        . 6 8 7 7 8 8 6 6 6 6 6 6 6 6 . 
+                        . . 6 8 7 7 8 6 6 6 6 6 8 6 . . 
+                        . . 6 8 8 7 8 8 6 6 6 8 6 6 . . 
+                        . . . 6 8 8 8 8 8 8 8 8 6 . . . 
+                        . . . . 6 6 8 8 8 8 6 6 . . . . 
+                        . . . . . . 6 6 6 6 . . . . . . 
+                        . . . . . . . . . . . . . . . . 
+                        . . . . . . . . . . . . . . . . 
+                        `)
+                    while (FightBack == 0) {
+                        sprites.destroyAllSpritesOfKind(SpriteKind.Projectile)
+                        sprites.destroyAllSpritesOfKind(SpriteKind.UnoReverseProjectile)
+                    }
+                    tiles.placeOnTile(mySprite, tiles.getTileLocation(8, 12))
+                    mySprite4 = sprites.create(img`
+                        . f . . . . f . . . 
+                        . f f . . f f . . . 
+                        . f 4 f f 4 f . . . 
+                        . f f 4 4 f f . . . 
+                        . f 1 f f 1 f f . . 
+                        f f f f f f f 1 f . 
+                        f 4 1 1 1 1 4 f 4 f 
+                        . f 4 1 1 4 f 4 4 f 
+                        . f 4 f f 4 f f f . 
+                        . f f f f f f . . . 
+                        `, SpriteKind.CutsceneNPC)
+                    tiles.placeOnTile(mySprite4, tiles.getTileLocation(8, 11))
+                    game.showLongText("Now it is my time to go.", DialogLayout.Bottom)
+                    game.showLongText("I can finally go and live my life!", DialogLayout.Bottom)
+                    game.showLongText("The stars are \"aligned\".", DialogLayout.Bottom)
+                    game.showLongText("Thank you.", DialogLayout.Bottom)
+                    game.showLongText("I guess I'd better go now.", DialogLayout.Bottom)
+                    for (let index = 0; index < 10; index++) {
+                        pause(100)
+                        projectile = sprites.createProjectileFromSprite(img`
+                            . . . . . . . . . . . . . . . . 
+                            . . . . . . . . b . . . . . . . 
+                            . . . . . . . b d b . . . . . . 
+                            . . . . . . b 5 5 5 b . . . . . 
+                            . . . . . b b 5 5 5 b b . . . . 
+                            . . b b b b 5 5 5 1 1 b b b b . 
+                            . . b 5 5 5 5 5 5 1 1 5 5 5 b . 
+                            . . b d d 5 5 5 5 5 5 5 d d b . 
+                            . . . b d d 5 5 5 5 5 d d b . . 
+                            . . . c b 5 5 5 5 5 5 5 b c . . 
+                            . . . c b 5 5 5 5 5 5 5 b c . . 
+                            . . . c 5 5 d d b d d 5 5 c . . 
+                            . . . c 5 d d c c c d d 5 c . . 
+                            . . . c c c c . . . c c c c . . 
+                            . . . . . . . . . . . . . . . . 
+                            . . . . . . . . . . . . . . . . 
+                            `, StarfallInd1, -100, 100)
+                        projectile = sprites.createProjectileFromSprite(img`
+                            . . . . . . . . . . . . . . . . 
+                            . . . . . . . . b . . . . . . . 
+                            . . . . . . . b d b . . . . . . 
+                            . . . . . . b 5 5 5 b . . . . . 
+                            . . . . . b b 5 5 5 b b . . . . 
+                            . . b b b b 5 5 5 1 1 b b b b . 
+                            . . b 5 5 5 5 5 5 1 1 5 5 5 b . 
+                            . . b d d 5 5 5 5 5 5 5 d d b . 
+                            . . . b d d 5 5 5 5 5 d d b . . 
+                            . . . c b 5 5 5 5 5 5 5 b c . . 
+                            . . . c b 5 5 5 5 5 5 5 b c . . 
+                            . . . c 5 5 d d b d d 5 5 c . . 
+                            . . . c 5 d d c c c d d 5 c . . 
+                            . . . c c c c . . . c c c c . . 
+                            . . . . . . . . . . . . . . . . 
+                            . . . . . . . . . . . . . . . . 
+                            `, StarfallInd2, 100, 100)
+                    }
+                    mySprite4.setVelocity(0, -25)
+                })
+            })
+        }
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile9`, function (sprite, location) {
@@ -259,6 +565,17 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile37`, function (sprite, 
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level6`)
     tiles.placeOnTile(sprite, tiles.getTileLocation(10, 1))
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
+    if (OverWorldAtk) {
+        otherSprite.setKind(SpriteKind.UnoReverseProjectile)
+        otherSprite.vx += -100
+        otherSprite.vy += -100
+        otherSprite.follow(mySprite3)
+    } else {
+        info.changeLifeBy(-1)
+        pause(500)
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, location) {
     game.setDialogFrame(img`
@@ -570,6 +887,158 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     	
     }
 })
+sprites.onOverlap(SpriteKind.CutsceneNPC, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.setVelocity(0, 0)
+    animation.runImageAnimation(
+    mySprite,
+    [img`
+        . f . . . . f . . . 
+        . f f . . f f . . . 
+        . f 4 f f 4 f . . . 
+        . f f 4 4 f f . . . 
+        . f 1 f f 1 f f . . 
+        . f f f f f f 1 f . 
+        f 4 1 1 1 1 4 f 4 f 
+        . f 4 1 1 4 f 4 4 f 
+        . f 4 f f 4 f f f . 
+        . f f f f f f . . . 
+        `,img`
+        . f . . . . f . . . 
+        . f f . . f f . . . 
+        . f 4 f f 4 f . . . 
+        . f f 4 4 f f . . . 
+        . f 1 f f 1 f f . . 
+        . f f f f f 4 f f . 
+        f 4 1 1 1 1 f 4 4 f 
+        . f 4 1 1 4 f 4 4 f 
+        . f 4 f f 4 f f f . 
+        . f f f f f f . . . 
+        `],
+    1000,
+    true
+    )
+    sprites.destroy(sprite, effects.disintegrate, 5000)
+    timer.after(6000, function () {
+        game.gameOver(true)
+    })
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.TowerEnemy, function (sprite, otherSprite) {
+    if (OverWorldAtk) {
+        sprites.destroy(otherSprite)
+    } else {
+        info.changeLifeBy(-1)
+        pause(1000)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairLarge, function (sprite, location) {
+    tiles.setCurrentTilemap(tilemap`level21`)
+    tiles.placeOnTile(mySprite, tiles.getTileLocation(8, 12))
+    game.setDialogFrame(img`
+        6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
+        6 2 2 2 2 2 2 2 2 2 2 2 2 2 6 
+        6 2 . . . 2 . . . 2 . . . 2 6 
+        6 2 . . 2 . . . . . 2 . . 2 6 
+        6 2 . 2 2 2 2 2 2 2 2 2 . 2 6 
+        6 2 2 . 2 1 1 1 1 1 2 . 2 2 6 
+        6 2 . . 2 1 1 1 1 1 2 . . 2 6 
+        6 2 . . 2 1 1 1 1 1 2 . . 2 6 
+        6 2 . . 2 1 1 1 1 1 2 . . 2 6 
+        6 2 2 . 2 1 1 1 1 1 2 . 2 2 6 
+        6 2 . 2 2 2 2 2 2 2 2 2 . 2 6 
+        6 2 . . 2 . . . . . 2 . . 2 6 
+        6 2 . . . 2 . . . 2 . . . 2 6 
+        6 2 2 2 2 2 2 2 2 2 2 2 2 2 6 
+        6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
+        `)
+    animation.runImageAnimation(
+    mySprite,
+    [img`
+        . . f f f f . . . . 
+        . f f f f f f . . . 
+        . f d d d d f . . . 
+        . f f d d f f . . . 
+        . f d f f d f . . . 
+        f 2 2 2 2 2 2 f . . 
+        f d 2 2 2 2 d f . . 
+        . f 8 8 8 8 f . . . 
+        . f 8 f f 8 f . . . 
+        . f f f f f f . . . 
+        `,img`
+        . . f f f f . . . . 
+        . f f f f f f . . . 
+        . f d d d d f . . . 
+        . f f d d f f f . . 
+        . f d f f d f 4 f . 
+        f 2 2 2 2 2 2 f . . 
+        f d 2 2 2 2 d f . . 
+        . f 8 8 8 8 f . . . 
+        . f 8 f f 8 f . . . 
+        . f f f f f f . . . 
+        `,img`
+        . . f f f f . . . . 
+        . f f f f f f . . . 
+        . f d d d d f f . . 
+        . f f d d f f 4 4 . 
+        . f d f f d f 4 4 f 
+        f 2 2 2 2 2 2 f . . 
+        f d 2 2 2 2 d f . . 
+        . f 8 8 8 8 f . . . 
+        . f 8 f f 8 f . . . 
+        . f f f f f f . . . 
+        `],
+    100,
+    false
+    )
+    timer.after(300, function () {
+        game.showLongText("Also, if this is it, I need to tell you, thank you for getting this far. Just thank you so much.", DialogLayout.Bottom)
+        game.showLongText("Now let's turn this world back to normal!", DialogLayout.Bottom)
+        game.showLongText("You can now switch characters by pressing \"B\"", DialogLayout.Bottom)
+        CharacterSwitchOn = true
+        CharacterFoxOn = false
+        mySprite3 = sprites.create(img`
+            . . . . . . 1 1 1 1 . . . . . . 
+            . . . . 1 1 f f f f 1 1 . . . . 
+            . . . 1 f f f f f f 1 f 1 . . . 
+            . . 1 f 1 f 1 f f f 1 f f 1 . . 
+            . . 1 f 1 1 1 f f f 1 1 f 1 . . 
+            . . 1 f 1 1 1 f f 1 1 1 f 1 . . 
+            . . 1 f 1 1 1 1 f 1 1 1 f 1 . . 
+            . . 1 f f f 1 1 1 1 f f f 1 . . 
+            . . 1 f f f 1 1 1 1 f f f 1 . . 
+            . . 1 f f f 1 1 1 1 f f f 1 . . 
+            . . . 1 f f f f f f f f 1 . . . 
+            . . 1 f f f f f f f f f f 1 . . 
+            . . 1 f f f f f f f f f f 1 . . 
+            . . 1 1 1 f f f f f f 1 1 1 . . 
+            . . . . 1 f f f f f f 1 . . . . 
+            . . . . 1 f f 1 1 f f 1 . . . . 
+            `, SpriteKind.Contrast)
+        tiles.placeOnTile(mySprite3, tiles.getTileLocation(8, 8))
+        BossFight = true
+        FightBack = 5
+        while (BossFight) {
+            pause(randint(500, 1000))
+            projectile2 = sprites.createProjectileFromSprite(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . 1 . . . . . . . 
+                . . . . . . . 1 1 1 . . . . . . 
+                . . . . . . 1 f f f 1 . . . . . 
+                . . . . . 1 1 f f f 1 1 . . . . 
+                . . 1 1 1 1 f f f 1 1 1 1 1 1 . 
+                . . 1 f f f f f f 1 1 f f f 1 . 
+                . . 1 1 1 f f f f f f f 1 1 1 . 
+                . . . 1 1 1 f f f f f 1 1 1 . . 
+                . . . 1 1 f f f f f f f 1 1 . . 
+                . . . 1 1 f f f f f f f 1 1 . . 
+                . . . 1 f f 1 1 1 1 1 f f 1 . . 
+                . . . 1 f 1 1 1 1 1 1 1 f 1 . . 
+                . . . 1 1 1 1 . . . 1 1 1 1 . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, mySprite3, randint(-100, 100), randint(-100, 100))
+        }
+    })
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile26`, function (sprite, location) {
     game.showLongText("You... And that fox... You are destined to finally restore peace to the land. I will just yeet you to the final boss if you want. It just costs five dollars. I'm joking of course, but the danger is real.", DialogLayout.Bottom)
     tiles.setTileAt(location, assets.tile`myTile24`)
@@ -587,12 +1056,19 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         pause(5000)
     }
 })
-let projectile: Sprite = null
+let projectile2: Sprite = null
+let mySprite3: Sprite = null
 let TowerAmbush2 = false
 let TowerAmbush = false
+let projectile: Sprite = null
+let mySprite4: Sprite = null
+let FightBack = 0
+let BossFight = false
 let Ambush = 0
 let mySprite2: Sprite = null
 let OverWorldAtk = false
+let CharacterFoxOn = false
+let CharacterSwitchOn = false
 let TrapDrUnlock = false
 let StarfallInd2: Sprite = null
 let StarfallInd1: Sprite = null
