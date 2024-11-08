@@ -26,6 +26,14 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
         game.showLongText("\"WHO SAID ALL HOUSES HAD TO FACE SOUTH! BASIC GEOMETRY PEOPLE! NOW STOP TRYING TO START A RIOT!\"", DialogLayout.Bottom)
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Contrast, function (sprite, otherSprite) {
+    if (OverWorldAtk) {
+        story.printCharacterText("It doesn't work!")
+    } else {
+        info.changeLifeBy(-1)
+        pause(500)
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level7`)
     tiles.placeOnTile(sprite, tiles.getTileLocation(9, 2))
@@ -267,6 +275,14 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile37`, function (sprite, 
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level6`)
     tiles.placeOnTile(sprite, tiles.getTileLocation(10, 1))
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
+    if (OverWorldAtk) {
+        otherSprite.vx += otherSprite.vx - 2 * otherSprite.vx
+        otherSprite.vy += otherSprite.vy - 2 * otherSprite.vy
+    } else {
+    	
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, location) {
     game.setDialogFrame(img`
@@ -588,8 +604,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.TowerEnemy, function (sprite, ot
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairLarge, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level21`)
-    game.showLongText("Thank You. I could never have gotten this far without you.", DialogLayout.Bottom)
-    tiles.placeOnTile(sprite, tiles.getTileLocation(8, 12))
+    tiles.placeOnTile(mySprite, tiles.getTileLocation(8, 12))
     mySprite3 = sprites.create(img`
         . . . . . . 1 1 1 1 . . . . . . 
         . . . . 1 1 f f f f 1 1 . . . . 
@@ -610,30 +625,9 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairLarge, function (spr
         `, SpriteKind.Contrast)
     tiles.placeOnTile(mySprite3, tiles.getTileLocation(8, 8))
     BossFight = true
-    while (BossFight) {
-        pause(randint(100, 750))
-        projectile2 = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . 1 . . . . . . . 
-            . . . . . . . 1 f 1 . . . . . . 
-            . . . . . . 1 f f f 1 . . . . . 
-            . . . . . 1 1 f f f 1 1 . . . . 
-            . . 1 1 1 1 f f f 1 1 1 1 1 1 . 
-            . . 1 f f f f f f 1 1 f f f 1 . 
-            . . 1 1 1 f f f f f f f 1 1 1 . 
-            . . . 1 1 1 f f f f f 1 1 1 . . 
-            . . . 1 1 f f f f f f f 1 1 . . 
-            . . . 1 1 f f f f f f f 1 1 . . 
-            . . . 1 f f 1 1 1 1 1 f f 1 . . 
-            . . . 1 f 1 1 1 1 1 1 1 f 1 . . 
-            . . . 1 1 1 1 . . . 1 1 1 1 . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, mySprite3, randint(-100, 100), randint(-100, 100))
-    }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile26`, function (sprite, location) {
-    game.showLongText("You... And that fox... You are destined to finally restore peace to the land. I will just yeet you to the final boss if you want. It just costs five dollars. I'm joking of course, but really, I'm tired of speaking all god-like. I have my limits you know!", DialogLayout.Bottom)
+    game.showLongText("You... And that fox... You are destined to finally restore peace to the land. I will just teleprt you to the final boss if you want. It just costs five dollars. I'm joking of course, but really, I'm tired of speaking all god-like. I have my limits you know!", DialogLayout.Bottom)
     tiles.setTileAt(location, assets.tile`myTile24`)
     timer.after(500, function () {
         game.showLongText("Return to the old tower... ", DialogLayout.Bottom)
@@ -650,7 +644,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         pause(5000)
     }
 })
-let projectile2: Sprite = null
 let BossFight = false
 let mySprite3: Sprite = null
 let projectile: Sprite = null
