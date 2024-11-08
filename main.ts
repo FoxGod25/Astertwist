@@ -1,9 +1,15 @@
 namespace SpriteKind {
     export const TowerEnemy = SpriteKind.create()
+    export const Contrast = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level5`)
     tiles.placeOnTile(sprite, tiles.getTileLocation(8, 3))
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile38`, function (sprite, location) {
+    game.showLongText("I'm wondering what to do with that sideways house... What! You think it's okay for it to be sideways!? It's a national felony to make your house sideways!", DialogLayout.Bottom)
+    game.showLongText("In other news, I gambled my shirt away in a game of poker last night. Do you want to play? Next game's next week.", DialogLayout.Bottom)
+    tiles.placeOnTile(mySprite, tiles.getTileLocation(location.column + 1, location.row))
 })
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (mySprite.tileKindAt(TileDirection.Top, assets.tile`myTile11`)) {
@@ -16,6 +22,8 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
             tiles.setWallAt(tiles.getTileLocation(10, 0), false)
             TrapDrUnlock = true
         }
+    } else if (mySprite.tileKindAt(TileDirection.Left, assets.tile`myTile34`)) {
+        game.showLongText("\"WHO SAID ALL HOUSES HAD TO FACE SOUTH! BASIC GEOMETRY PEOPLE! NOW STOP TRYING TO START A RIOT!\"", DialogLayout.Bottom)
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, location) {
@@ -570,11 +578,66 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     	
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.TowerEnemy, function (sprite, otherSprite) {
+    if (OverWorldAtk) {
+        sprites.destroy(otherSprite)
+    } else {
+        info.changeLifeBy(-1)
+        pause(100)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairLarge, function (sprite, location) {
+    tiles.setCurrentTilemap(tilemap`level21`)
+    game.showLongText("Thank You. I could never have gotten this far without you.", DialogLayout.Bottom)
+    tiles.placeOnTile(sprite, tiles.getTileLocation(8, 12))
+    mySprite3 = sprites.create(img`
+        . . . . . . 1 1 1 1 . . . . . . 
+        . . . . 1 1 f f f f 1 1 . . . . 
+        . . . 1 f f f f f f f f 1 . . . 
+        . . 1 f 1 f f f f f f 1 f 1 . . 
+        . . 1 f 1 f f f 1 f f 1 f 1 . . 
+        . . 1 f 1 1 f f 1 f 1 1 f 1 . . 
+        . . 1 f 1 1 f 1 1 f 1 1 f 1 . . 
+        . . 1 f 1 1 f 1 1 f 1 1 f 1 . . 
+        . . 1 f f f f 1 1 f f f f 1 . . 
+        . . 1 f f f f f f f f f f 1 . . 
+        . . . 1 f f f f f f f f 1 . . . 
+        . . 1 f f f f f f f f f f 1 . . 
+        . . 1 f f f f f f f f f f 1 . . 
+        . . 1 1 1 f f f f f f 1 1 1 . . 
+        . . . . 1 f f 1 1 f f 1 . . . . 
+        . . . . 1 1 1 1 1 1 1 1 . . . . 
+        `, SpriteKind.Contrast)
+    tiles.placeOnTile(mySprite3, tiles.getTileLocation(8, 8))
+    BossFight = true
+    while (BossFight) {
+        pause(randint(100, 750))
+        projectile2 = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . 1 . . . . . . . 
+            . . . . . . . 1 f 1 . . . . . . 
+            . . . . . . 1 f f f 1 . . . . . 
+            . . . . . 1 1 f f f 1 1 . . . . 
+            . . 1 1 1 1 f f f 1 1 1 1 1 1 . 
+            . . 1 f f f f f f 1 1 f f f 1 . 
+            . . 1 1 1 f f f f f f f 1 1 1 . 
+            . . . 1 1 1 f f f f f 1 1 1 . . 
+            . . . 1 1 f f f f f f f 1 1 . . 
+            . . . 1 1 f f f f f f f 1 1 . . 
+            . . . 1 f f 1 1 1 1 1 f f 1 . . 
+            . . . 1 f 1 1 1 1 1 1 1 f 1 . . 
+            . . . 1 1 1 1 . . . 1 1 1 1 . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, mySprite3, randint(-100, 100), randint(-100, 100))
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile26`, function (sprite, location) {
-    game.showLongText("You... And that fox... You are destined to finally restore peace to the land. I will just yeet you to the final boss if you want. It just costs five dollars. I'm joking of course, but the danger is real.", DialogLayout.Bottom)
+    game.showLongText("You... And that fox... You are destined to finally restore peace to the land. I will just yeet you to the final boss if you want. It just costs five dollars. I'm joking of course, but really, I'm tired of speaking all god-like. I have my limits you know!", DialogLayout.Bottom)
     tiles.setTileAt(location, assets.tile`myTile24`)
     timer.after(500, function () {
         game.showLongText("Return to the old tower... ", DialogLayout.Bottom)
+        game.showLongText("And stop bothering me!", DialogLayout.Bottom)
         tiles.setCurrentTilemap(tilemap`level8`)
     })
 })
@@ -587,6 +650,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         pause(5000)
     }
 })
+let projectile2: Sprite = null
+let BossFight = false
+let mySprite3: Sprite = null
 let projectile: Sprite = null
 let TowerAmbush2 = false
 let TowerAmbush = false
