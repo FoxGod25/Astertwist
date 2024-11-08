@@ -388,6 +388,7 @@ sprites.onOverlap(SpriteKind.Contrast, SpriteKind.ReversedProjectile, function (
     )
     sprites.destroy(otherSprite)
     if (BossHP <= 0) {
+        controller.moveSprite(mySprite, 0, 0)
         animation.runImageAnimation(
         sprite,
         [img`
@@ -565,20 +566,16 @@ sprites.onOverlap(SpriteKind.Contrast, SpriteKind.ReversedProjectile, function (
         false
         )
         timer.after(900, function () {
-            mySprite4 = sprites.create(img`
-                . f . . . . f . 
-                . f f . . f f . 
-                . f 4 f f 4 f . 
-                . f f 4 4 f f . 
-                . f 1 f f 1 f . 
-                . f f f f f f . 
-                f 4 1 1 1 1 4 f 
-                . f 4 1 1 4 f . 
-                . f 4 f f 4 f . 
-                . f f f f f f . 
-                `, SpriteKind.Player)
-            game.showLongText("Goodbye.", DialogLayout.Bottom)
-            game.showLongText("I can finally leave and ", DialogLayout.Bottom)
+            tiles.placeOnTile(mySprite, tiles.getTileLocation(8, 12))
+            game.showLongText("Thank you for getting this far.", DialogLayout.Bottom)
+            game.showLongText("I can finally stop devellopment!", DialogLayout.Bottom)
+            timer.after(4500, function () {
+                story.printCharacterText("As the credits fall, please let me know.")
+                story.printCharacterText("Was this a good game?")
+                timer.after(500, function () {
+                    story.printDialog("Credits:  Programmers: Jonathan Fan   Sprites: Jonathan  Mildly interesting dialogue: Jonathan Fan  Map design: Jonathan Fan  Too many nuke jokes: Jonathan  Gambling shirts away in poker : Earthbound(1994) Ape Inc.(1995) Hal Laboratory(1980) Nintendo(1889) All rights reserved (NINTENDO PLEASE DON'T SUE ME)", 0, 0, 150, 50, 4)
+                })
+            })
         })
     }
 })
@@ -906,7 +903,6 @@ let projectile2: Sprite = null
 let BossFight = false
 let mySprite3: Sprite = null
 let projectile: Sprite = null
-let mySprite4: Sprite = null
 let BossHP = 0
 let TowerAmbush2 = false
 let TowerAmbush = false
