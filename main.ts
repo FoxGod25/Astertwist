@@ -573,7 +573,7 @@ sprites.onOverlap(SpriteKind.Contrast, SpriteKind.ReversedProjectile, function (
                 story.printCharacterText("As the credits fall, please let me know.")
                 story.printCharacterText("Was this a good game?")
                 timer.after(500, function () {
-                    story.printDialog("Credits:  Programmers: Jonathan Fan   Sprites: Jonathan  Mildly interesting dialogue: Jonathan Fan  Map design: Jonathan Fan  Too many nuke jokes: Jonathan  Gambling shirts away in poker : Earthbound(1994) Ape Inc.(1995) Hal Laboratory(1980) Nintendo(1889) All rights reserved (NINTENDO PLEASE DON'T SUE ME)", 0, 0, 150, 50, 4)
+                    story.printCharacterText("Credits:  Programmers: Jonathan Fan   Sprites: Jonathan  Mildly interesting dialogue: Jonathan Fan  Map design: Jonathan Fan  Too many nuke jokes: Jonathan Fan \"Gambling shirts away in poker\" : Earthbound(1994) Ape Inc.(1995) Hal Laboratory(1980) Nintendo(1889) All rights reserved (NINTENDO PLEASE DON'T SUE ME)", "Credits")
                 })
             })
         })
