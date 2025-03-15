@@ -27,6 +27,14 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
         game.showLongText("\"WHO SAID ALL HOUSES HAD TO FACE SOUTH! BASIC GEOMETRY PEOPLE! NOW STOP TRYING TO START A RIOT!\"", DialogLayout.Bottom)
     }
 })
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    Run = true
+    while (Run) {
+        if (!(BedAnim)) {
+            controller.moveSprite(mySprite, 1000, 1000)
+        }
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Contrast, function (sprite, otherSprite) {
     if (OverWorldAtk) {
         story.printCharacterText("It doesn't work!")
@@ -848,6 +856,12 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     	
     }
 })
+controller.B.onEvent(ControllerButtonEvent.Released, function () {
+    Run = false
+    if (!(BedAnim)) {
+        controller.moveSprite(mySprite, 100, 100)
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.TowerEnemy, function (sprite, otherSprite) {
     if (OverWorldAtk) {
         sprites.destroy(otherSprite)
@@ -909,6 +923,7 @@ let TowerAmbush = false
 let Ambush = 0
 let mySprite2: Sprite = null
 let OverWorldAtk = false
+let Run = false
 let TrapDrUnlock = false
 let StarfallInd2: Sprite = null
 let StarfallInd1: Sprite = null
@@ -926,6 +941,7 @@ let Itm4 = ""
 let Itm3 = ""
 let Itm2 = ""
 let Itm1 = ""
+let BedAnim = false
 let mySprite: Sprite = null
 game.setDialogFrame(img`
     1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
@@ -995,7 +1011,7 @@ mySprite,
 1000,
 true
 )
-let BedAnim = true
+BedAnim = true
 timer.after(5000, function () {
     scene.cameraShake(4, 1000)
     animation.stopAnimation(animation.AnimationTypes.All, mySprite)
